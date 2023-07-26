@@ -16,7 +16,7 @@ object DataMapper {
                 type = it.type.orEmpty(),
                 properties = PropertiesReport(
                     pkey = it.properties?.pkey.orEmpty(),
-                    created_at = formatCreatedAtDate(it.properties?.createdAt.orEmpty()).toString(),
+                    created_at = it.properties?.createdAt.orEmpty(),
                     source = it.properties?.source.orEmpty(),
                     status = it.properties?.status.orEmpty(),
                     url = it.properties?.url.orEmpty(),

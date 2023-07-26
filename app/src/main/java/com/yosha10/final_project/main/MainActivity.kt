@@ -1,4 +1,4 @@
-package com.yosha10.final_project
+package com.yosha10.final_project.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,18 +7,24 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.yosha10.final_project.R
+import com.yosha10.final_project.core.ui.ViewModelFactory
+import com.yosha10.final_project.core.data.Resource
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.setting.SettingsActivity
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var _activityMainBinding: ActivityMainBinding? = null
     private val binding get() = _activityMainBinding!!
+
+    private lateinit var mainViewModel: MainViewModel
 
     private lateinit var mMap: GoogleMap
 
@@ -28,6 +34,24 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         supportActionBar?.hide()
+
+        val factory = ViewModelFactory.getInstance(this@MainActivity)
+        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+
+        mainViewModel.getAllReport(timeperiod = 86_400).observe(this) { report ->
+            if (report != null) {
+                when (report) {
+                    is Resource.Loading -> {
+
+                    }
+
+                    is Resource.Success -> {
+                    }
+                    is Resource.Error -> {}
+                }
+            }
+        }
+
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
@@ -61,7 +85,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         }
-        Log.d("MainActivity", "onCreate")
     }
 
     override fun onDestroy() {
@@ -69,8 +92,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         _activityMainBinding = null
     }
 
+    override fun onBackPressed() {
+        with(binding){
+            if (searchView.isShowing) {
+                searchView.hide()
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
-        Log.d("OnMapReady", "onMapReady")
         mMap = googleMap
 
         // Add a marker in Sydney and move the camera

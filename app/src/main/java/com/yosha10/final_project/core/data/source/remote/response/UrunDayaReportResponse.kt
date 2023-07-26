@@ -98,7 +98,7 @@ data class Objects(
 data class Output(
 
 	@field:SerializedName("geometries")
-	val geometries: List<GeometriesItem?>? = null,
+	val geometries: List<GeometriesItem>? = null,
 
 	@field:SerializedName("type")
 	val type: String? = null

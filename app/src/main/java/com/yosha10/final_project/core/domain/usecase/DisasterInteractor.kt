@@ -7,11 +7,12 @@ import com.yosha10.final_project.core.domain.repository.IDisasterRepository
 
 class DisasterInteractor(private val disasterRepository: IDisasterRepository) : DisasterUseCase {
 
-    override fun getUrunDayaReport(
+    override fun getAllReport(
         admin: String?,
-        disaster: String?
+        disaster: String?,
+        timeperiod: Int?
     ): LiveData<Resource<List<UrunDayaReport>>> {
-        return disasterRepository.getUrunDayaReport(admin, disaster)
+        return disasterRepository.getAllReport(admin, disaster, timeperiod)
     }
 
 }
