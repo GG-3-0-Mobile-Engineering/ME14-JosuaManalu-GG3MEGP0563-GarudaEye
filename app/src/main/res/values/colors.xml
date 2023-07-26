@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="colorFlood">#3498DB</color>
+    <color name="colorEarthquake">#900C3F</color>
+    <color name="colorFire">#FF5733</color>
+    <color name="colorHaze">#FFC300</color>
+    <color name="colorWind">#27AE60</color>
+    <color name="colorVolcano">#8E44AD</color>
+
 </resources>

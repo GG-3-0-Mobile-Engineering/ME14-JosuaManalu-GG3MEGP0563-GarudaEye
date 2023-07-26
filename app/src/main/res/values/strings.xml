@@ -4,6 +4,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="search_hint">Search…</string>
+    <string name="no_title">Tidak ada judul</string>
+    <string name="no_description">Tidak ada deskripsi</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -41,5 +43,9 @@
     <string name="filter_haze">Kabut Asap</string>
     <string name="filter_fire">Kebakaran Hutan</string>
     <string name="filter_volcano">Gunung Api</string>
+    <string name="item_image_disaster">Gambar Bencana</string>
+    <string name="filter_disaster">Filter Disaster</string>
+    <string name="settings">Settings</string>
+    <string name="error_message">Oops.. Data tidak ada</string>
 
 </resources>

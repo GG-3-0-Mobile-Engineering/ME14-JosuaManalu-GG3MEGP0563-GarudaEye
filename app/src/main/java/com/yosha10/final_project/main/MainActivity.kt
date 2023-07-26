@@ -2,12 +2,12 @@ package com.yosha10.final_project.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -15,8 +15,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yosha10.final_project.R
-import com.yosha10.final_project.core.ui.ViewModelFactory
 import com.yosha10.final_project.core.data.Resource
+import com.yosha10.final_project.core.ui.DisasterListAdapter
+import com.yosha10.final_project.core.ui.ViewModelFactory
+import com.yosha10.final_project.core.utils.DisasterType
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.setting.SettingsActivity
 
@@ -28,35 +30,93 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
 
+    private lateinit var disasterListAdapter: DisasterListAdapter
+
+    private var filterDisaster: String? = null
+    private var filterLocation: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Hide Action Bar
         supportActionBar?.hide()
 
+        // Init Adapter
+        setupAdapter()
+
+        // Show SearchBar
+        setupSearhBar()
+
+        // Init ViewModel
         val factory = ViewModelFactory.getInstance(this@MainActivity)
         mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
-        mainViewModel.getAllReport(timeperiod = 86_400).observe(this) { report ->
-            if (report != null) {
-                when (report) {
-                    is Resource.Loading -> {
+        // Call All Report
+        getAllReport(admin = filterLocation,disaster = filterDisaster, timeperiod = 432_000)
 
-                    }
-
-                    is Resource.Success -> {
-                    }
-                    is Resource.Error -> {}
-                }
-            }
-        }
-
-
+        // Show Map Fragment
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+    }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityMainBinding = null
+    }
+
+    @Deprecated("Deprecated in Java")
+    override fun onBackPressed() {
+        with(binding) {
+            if (searchView.isShowing) {
+                searchView.hide()
+            } else {
+                super.onBackPressed()
+            }
+        }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        // Add a marker in Sydney and move the camera
+        val sydney = LatLng(-34.0, 151.0)
+        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+    private fun getAllReport(
+        admin: String? = null,
+        disaster: String? = null,
+        timeperiod: Int? = null
+    ) {
+        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = timeperiod).observe(this) { report ->
+            if (report != null) {
+                when (report) {
+                    is Resource.Loading -> showLoading(true)
+
+                    is Resource.Success -> {
+                        showLoading(false)
+                        if (report.data.isNullOrEmpty()) {
+                            showTvError(true)
+                        } else {
+                            showTvError(false)
+                            disasterListAdapter.setData(report.data)
+                        }
+                    }
+
+                    is Resource.Error -> {
+                        showLoading(false)
+                        Toast.makeText(this@MainActivity, report.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun setupSearhBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
             searchView
@@ -87,28 +147,27 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _activityMainBinding = null
-    }
-
-    override fun onBackPressed() {
-        with(binding){
-            if (searchView.isShowing) {
-                searchView.hide()
-            } else {
-                super.onBackPressed()
-            }
+    private fun showTvError(isError: Boolean) {
+        if (isError) {
+            binding.myBottomSheet.tvError.visibility = View.VISIBLE
+            binding.myBottomSheet.rvListDisaster.visibility = View.GONE
+        } else {
+            binding.myBottomSheet.tvError.visibility = View.GONE
+            binding.myBottomSheet.rvListDisaster.visibility = View.VISIBLE
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+    private fun setupAdapter() {
+        disasterListAdapter = DisasterListAdapter()
+        with(binding.myBottomSheet.rvListDisaster) {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            setHasFixedSize(true)
+            adapter = disasterListAdapter
+        }
+    }
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    private fun showLoading(isLoading: Boolean) {
+        binding.loadingAnimation.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
     // Showing menu filter disasters
@@ -117,8 +176,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         PopupMenu(this, filterView).run {
             menuInflater.inflate(R.menu.filter_disasters, menu)
 
+            setOnMenuItemClickListener { itemMenu ->
+                val disasterType = when (itemMenu.itemId) {
+                    R.id.flood -> DisasterType.FLOOD
+                    R.id.earthquake -> DisasterType.EARTHQUAKE
+                    R.id.wind -> DisasterType.WIND
+                    R.id.haze -> DisasterType.HAZE
+                    R.id.fire -> DisasterType.FIRE
+                    R.id.volcano -> DisasterType.VOLCANO
+                    else -> null
+                }
+                disasterType?.let {
+                    filterDisaster = it.name.lowercase()
+                }
+                getAllReport(admin = filterLocation,disaster = filterDisaster, timeperiod = 432_000)
+                true
+            }
             show()
         }
-
     }
 }

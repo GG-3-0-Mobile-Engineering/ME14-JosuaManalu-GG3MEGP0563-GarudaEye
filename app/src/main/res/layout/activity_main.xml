@@ -30,6 +30,18 @@
     </com.google.android.material.search.SearchView>
 
     <include
+        android:id="@+id/my_bottom_sheet"
         layout="@layout/fragment_modal_bottom_sheet_list_dialog"/>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/loading_animation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0"
+        app:lottie_fileName="animation_loading.json"
+        android:layout_gravity="center"
+        app:lottie_loop="true"
+        android:visibility="gone"/>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
