@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:elevation="16dp"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="300dp"
+    app:behavior_peekHeight="210dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <RelativeLayout

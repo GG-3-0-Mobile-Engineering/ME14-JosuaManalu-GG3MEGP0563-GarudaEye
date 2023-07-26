@@ -6,6 +6,8 @@
     <string name="search_hint">Search…</string>
     <string name="no_title">Tidak ada judul</string>
     <string name="no_description">Tidak ada deskripsi</string>
+    <string name="created_at_text">Created At: %1$s</string>
+
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

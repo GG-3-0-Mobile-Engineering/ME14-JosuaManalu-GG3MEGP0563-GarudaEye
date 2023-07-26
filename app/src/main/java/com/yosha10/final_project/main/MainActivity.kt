@@ -12,15 +12,19 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yosha10.final_project.R
 import com.yosha10.final_project.core.data.Resource
 import com.yosha10.final_project.core.ui.DisasterListAdapter
 import com.yosha10.final_project.core.ui.ViewModelFactory
+import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.setting.SettingsActivity
+import java.util.Locale
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var _activityMainBinding: ActivityMainBinding? = null
@@ -35,6 +39,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var filterDisaster: String? = null
     private var filterLocation: String? = null
 
+    private val boundsBuilder = LatLngBounds.Builder()
+
+    private var mapNotReady: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -47,14 +55,17 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setupAdapter()
 
         // Show SearchBar
-        setupSearhBar()
+        setupSearchBar()
 
         // Init ViewModel
         val factory = ViewModelFactory.getInstance(this@MainActivity)
+
         mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
+
         // Call All Report
-        getAllReport(admin = filterLocation,disaster = filterDisaster, timeperiod = 432_000)
+        getAllReport(admin = filterLocation, disaster = filterDisaster, timeperiod = 432_000)
+
 
         // Show Map Fragment
         val mapFragment = supportFragmentManager
@@ -80,11 +91,14 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        mMap.uiSettings.apply {
+            isZoomControlsEnabled = true
+            isIndoorLevelPickerEnabled = true
+            isCompassEnabled = true
+            isMapToolbarEnabled = true
+        }
+        mMap.setPadding(0, 0, 0, 600)
+        mapNotReady = !mapNotReady
     }
 
     private fun getAllReport(
@@ -92,31 +106,65 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         disaster: String? = null,
         timeperiod: Int? = null
     ) {
-        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = timeperiod).observe(this) { report ->
-            if (report != null) {
-                when (report) {
-                    is Resource.Loading -> showLoading(true)
+        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = timeperiod)
+            .observe(this) { report ->
+                if (report != null) {
+                    when (report) {
+                        is Resource.Loading -> showLoading(true)
 
-                    is Resource.Success -> {
-                        showLoading(false)
-                        if (report.data.isNullOrEmpty()) {
-                            showTvError(true)
-                        } else {
-                            showTvError(false)
-                            disasterListAdapter.setData(report.data)
+                        is Resource.Success -> {
+                            showLoading(false)
+                            if (report.data.isNullOrEmpty()) {
+                                showTvError(true)
+                            } else {
+                                showTvError(false)
+                                disasterListAdapter.setData(report.data)
+                                if (!mapNotReady) {
+                                    mMap.clear()
+                                    report.data.forEach { item ->
+                                        val createdAt = DateFormatter.formatDate(item.properties.created_at)
+                                        val coordinate =
+                                            LatLng(item.coordinates[1], item.coordinates[0])
+                                        mMap.addMarker(
+                                            MarkerOptions()
+                                                .position(coordinate)
+                                                .title(item.properties.disaster_type.replaceFirstChar {
+                                                    if (it.isLowerCase()) it.titlecase(
+                                                        Locale.getDefault()
+                                                    ) else it.toString()
+                                                })
+                                                .icon(
+                                                    BitmapDescriptorFactory.defaultMarker()
+                                                )
+                                                .snippet(getString(R.string.created_at_text, createdAt))
+                                        )
+                                        boundsBuilder.include(coordinate)
+
+                                        val bounds: LatLngBounds = boundsBuilder.build()
+                                        mMap.animateCamera(
+                                            CameraUpdateFactory.newLatLngBounds(
+                                                bounds,
+                                                resources.displayMetrics.widthPixels,
+                                                resources.displayMetrics.heightPixels,
+                                                300
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
-                    }
 
-                    is Resource.Error -> {
-                        showLoading(false)
-                        Toast.makeText(this@MainActivity, report.message, Toast.LENGTH_SHORT).show()
+                        is Resource.Error -> {
+                            showLoading(false)
+                            Toast.makeText(this@MainActivity, report.message, Toast.LENGTH_SHORT)
+                                .show()
+                        }
                     }
                 }
             }
-        }
     }
 
-    private fun setupSearhBar() {
+    private fun setupSearchBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
             searchView
@@ -189,7 +237,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 disasterType?.let {
                     filterDisaster = it.name.lowercase()
                 }
-                getAllReport(admin = filterLocation,disaster = filterDisaster, timeperiod = 432_000)
+                getAllReport(
+                    admin = filterLocation,
+                    disaster = filterDisaster,
+                    timeperiod = 432_000
+                )
                 true
             }
             show()
