@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Final-Project</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="search_hint">Search…</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+    
+    <!-- Theme Preferences -->
+    <string name="theme_header">Theme</string>
+    <string name="theme_title">Dark Mode</string>
+    <string name="theme_summary">Change theme to dark mode</string>
+    <string name="pref_theme_key">key_dark_mode</string>
+
+    <string name="pref_dark_follow_system">follow_system</string>
+    <string name="pref_dark_on" translatable="false">on</string>
+    <string name="pref_dark_off" translatable="false">off</string>
+
+    <string name="dark_mode_auto">Automatic</string>
+    <string name="dark_mode_on">Dark mode</string>
+    <string name="dark_mode_off">Light mode</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    
+    <!-- Filter Disasters -->
+    <string name="filter_flood">Banjir</string>
+    <string name="filter_earthquake">Gempa Bumi</string>
+    <string name="filter_wind">Angin Kencang</string>
+    <string name="filter_haze">Kabut Asap</string>
+    <string name="filter_fire">Kebakaran Hutan</string>
+    <string name="filter_volcano">Gunung Api</string>
+
+</resources>
