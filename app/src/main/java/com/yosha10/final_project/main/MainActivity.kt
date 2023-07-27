@@ -2,6 +2,8 @@ package com.yosha10.final_project.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,9 +21,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.yosha10.final_project.R
 import com.yosha10.final_project.core.data.Resource
 import com.yosha10.final_project.core.ui.DisasterListAdapter
+import com.yosha10.final_project.core.ui.RegionListAdapter
 import com.yosha10.final_project.core.ui.ViewModelFactory
 import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
+import com.yosha10.final_project.core.utils.Region
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.setting.SettingsActivity
 import java.util.Locale
@@ -43,6 +47,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var mapNotReady: Boolean = true
 
+    val regions = Region.listRegions
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
@@ -52,20 +59,18 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.hide()
 
         // Init Adapter
-        setupAdapter()
+        setupDisasterAdapter()
 
-        // Show SearchBar
+        // Show SearchBar and SearchView
         setupSearchBar()
+        setupSearchViewSuggestion()
 
         // Init ViewModel
         val factory = ViewModelFactory.getInstance(this@MainActivity)
-
         mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
-
         // Call All Report
-        getAllReport(admin = filterLocation, disaster = filterDisaster, timeperiod = 432_000)
-
+        callApi()
 
         // Show Map Fragment
         val mapFragment = supportFragmentManager
@@ -101,12 +106,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapNotReady = !mapNotReady
     }
 
+    private fun callApi() {
+        getAllReport(admin = filterLocation, disaster = filterDisaster)
+    }
+
     private fun getAllReport(
         admin: String? = null,
         disaster: String? = null,
-        timeperiod: Int? = null
     ) {
-        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = timeperiod)
+        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = 172_800)
             .observe(this) { report ->
                 if (report != null) {
                     when (report) {
@@ -122,21 +130,34 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 if (!mapNotReady) {
                                     mMap.clear()
                                     report.data.forEach { item ->
-                                        val createdAt = DateFormatter.formatDate(item.properties.created_at)
+                                        val disasterType = item.properties.disaster_type
+                                        val disasterTypeText = when(DisasterType.valueOf(disasterType.uppercase())) {
+                                            // the color of the badge card will change based on disaster type
+                                            DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
+                                            DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
+                                            DisasterType.FIRE -> DisasterType.FIRE.IDvalue
+                                            DisasterType.HAZE -> DisasterType.HAZE.IDvalue
+                                            DisasterType.WIND -> DisasterType.WIND.IDvalue
+                                            DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
+                                        }
+
+                                        val createdAt =
+                                            DateFormatter.formatDate(item.properties.created_at)
                                         val coordinate =
                                             LatLng(item.coordinates[1], item.coordinates[0])
                                         mMap.addMarker(
                                             MarkerOptions()
                                                 .position(coordinate)
-                                                .title(item.properties.disaster_type.replaceFirstChar {
-                                                    if (it.isLowerCase()) it.titlecase(
-                                                        Locale.getDefault()
-                                                    ) else it.toString()
-                                                })
+                                                .title(disasterTypeText)
                                                 .icon(
                                                     BitmapDescriptorFactory.defaultMarker()
                                                 )
-                                                .snippet(getString(R.string.created_at_text, createdAt))
+                                                .snippet(
+                                                    getString(
+                                                        R.string.created_at_text,
+                                                        createdAt
+                                                    )
+                                                )
                                         )
                                         boundsBuilder.include(coordinate)
 
@@ -164,18 +185,35 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
+    private fun setupSearchViewSuggestion(){
+        with(binding) {
+            val regionAdapter = RegionListAdapter { item ->
+                searchBar.text = item
+                searchView.hide()
+                filterLocation = regions[item]
+                callApi()
+            }
+
+            rvRegion.adapter = regionAdapter
+            rvRegion.layoutManager = LinearLayoutManager(this@MainActivity)
+            regionAdapter.submitList(regions.keys.toList())
+
+            searchView.editText.addTextChangedListener(object : TextWatcher {
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    val filteredRegions =
+                        regions.filter { it.key.contains(s ?: "", ignoreCase = true) }
+                    regionAdapter.submitList(filteredRegions.keys.toList())
+                }
+
+                override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+                override fun afterTextChanged(p0: Editable?) {}
+            })
+        }
+    }
+
     private fun setupSearchBar() {
         with(binding) {
             searchView.setupWithSearchBar(searchBar)
-            searchView
-                .editText
-                .setOnEditorActionListener { _, _, _ ->
-                    searchBar.text = searchView.text
-                    searchView.hide()
-                    Toast.makeText(this@MainActivity, searchView.text, Toast.LENGTH_SHORT).show()
-                    false
-                }
-
             searchBar.inflateMenu(R.menu.main_menu)
             searchBar.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -205,7 +243,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun setupAdapter() {
+    private fun setupDisasterAdapter() {
         disasterListAdapter = DisasterListAdapter()
         with(binding.myBottomSheet.rvListDisaster) {
             layoutManager = LinearLayoutManager(this@MainActivity)
@@ -237,11 +275,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 disasterType?.let {
                     filterDisaster = it.name.lowercase()
                 }
-                getAllReport(
-                    admin = filterLocation,
-                    disaster = filterDisaster,
-                    timeperiod = 432_000
-                )
+                callApi()
                 true
             }
             show()

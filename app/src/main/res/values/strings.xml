@@ -12,7 +12,7 @@
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
-    
+
     <!-- Theme Preferences -->
     <string name="theme_header">Theme</string>
     <string name="theme_title">Dark Mode</string>
@@ -37,7 +37,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    
+
     <!-- Filter Disasters -->
     <string name="filter_flood">Banjir</string>
     <string name="filter_earthquake">Gempa Bumi</string>

@@ -18,10 +18,19 @@
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
         <activity
+            android:name=".splash.SplashActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".setting.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".main.MainActivity"/>
+            android:parentActivityName=".main.MainActivity" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -42,13 +51,7 @@
 
         <activity
             android:name=".main.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="false"/>
     </application>
 
 </manifest>

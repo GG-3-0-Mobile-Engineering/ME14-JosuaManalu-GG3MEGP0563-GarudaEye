@@ -26,10 +26,12 @@
 
         <TextView
             android:id="@+id/item_tv_title"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/item_iv_disaster"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
@@ -38,25 +40,27 @@
             android:id="@+id/item_tv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
-            tools:text="Description"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            style="@style/TextAppearance.Material3.BodyMedium"
             app:layout_constraintStart_toEndOf="@+id/item_iv_disaster"
-            app:layout_constraintTop_toBottomOf="@+id/item_tv_title" />
+            app:layout_constraintTop_toBottomOf="@+id/item_tv_title"
+            tools:text="Description" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/disaster_type_badge"
-            android:layout_width="70dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            tools:cardBackgroundColor="#2196F3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            tools:cardBackgroundColor="#2196F3">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
                 android:paddingVertical="4dp">
 
                 <TextView
@@ -64,11 +68,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
+                    android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Flood" />
+                    tools:text="Kebakaran Hutan" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 

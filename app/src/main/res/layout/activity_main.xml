@@ -27,21 +27,22 @@
         android:layout_height="match_parent"
         android:elevation="18dp"
         android:hint="@string/search_hint">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_region"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </com.google.android.material.search.SearchView>
 
     <include
         android:id="@+id/my_bottom_sheet"
         layout="@layout/fragment_modal_bottom_sheet_list_dialog"/>
 
-    <com.airbnb.lottie.LottieAnimationView
+    <ProgressBar
         android:id="@+id/loading_animation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:alpha="0"
-        app:lottie_fileName="animation_loading.json"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:layout_gravity="center"
-        app:lottie_loop="true"
+        android:elevation="24dp"
         android:visibility="gone"/>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

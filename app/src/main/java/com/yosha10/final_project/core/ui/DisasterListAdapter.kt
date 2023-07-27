@@ -53,14 +53,24 @@ class DisasterListAdapter : RecyclerView.Adapter<DisasterListAdapter.DisasterLis
                     data.properties.text,
                     itemView.context.getString(R.string.no_description)
                 )
-                itemTvDisasterType.text = data.properties.disaster_type.capitalize(Locale.ROOT)
+                val disasterType = data.properties.disaster_type
+                val disasterTypeText = when(DisasterType.valueOf(disasterType.uppercase())) {
+                    // the color of the badge card will change based on disaster type
+                    DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
+                    DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
+                    DisasterType.FIRE -> DisasterType.FIRE.IDvalue
+                    DisasterType.HAZE -> DisasterType.HAZE.IDvalue
+                    DisasterType.WIND -> DisasterType.WIND.IDvalue
+                    DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
+                }
+                itemTvDisasterType.text = disasterTypeText
 
                 Glide.with(itemView.context)
                     .load(data.properties.image_url)
                     .placeholder(R.drawable.placeholder_image)
                     .into(itemIvDisaster)
 
-                val disasterType = data.properties.disaster_type
+
                 val colorBadge = when(DisasterType.valueOf(disasterType.uppercase())) {
                     // the color of the badge card will change based on disaster type
                     DisasterType.FLOOD -> DisasterType.FLOOD.colorResId
