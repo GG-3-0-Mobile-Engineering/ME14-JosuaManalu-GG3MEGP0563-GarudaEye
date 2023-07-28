@@ -36,6 +36,7 @@ Untuk menggunakan aplikasi ini, ikuti langkah-langkah di bawah ini:
 
 ```bash
 git clone https://github.com/username/nama-repo.git
+```
 
 2. Buka project di Android Studio.
 3. Lakukan build dan jalankan aplikasi. Pastikan Anda memiliki kunci API dari Google Maps untuk menampilkan peta pada aplikasi.
