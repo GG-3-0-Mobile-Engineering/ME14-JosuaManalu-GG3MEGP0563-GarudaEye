@@ -44,9 +44,8 @@ git clone https://github.com/username/nama-repo.git
 ## Tampilan Aplikasi
 Berikut adalah beberapa tangkapan layar aplikasi yang menunjukkan berbagai fitur yang tersedia dalam GarudaEye.
 
-Tampilan Aplikasi 1
-Tampilan Aplikasi 2
-Tampilan Aplikasi 3
+Aplikasi bisa di download di link berikut ini:
+https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=sharing
 
 ## Kontribusi
 Jika Anda ingin berkontribusi pada proyek ini, Anda dapat mengirimkan Pull Request ke repository ini. Kami sangat menghargai kontribusi dari para pengguna.
