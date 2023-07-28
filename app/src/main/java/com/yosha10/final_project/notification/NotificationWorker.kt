@@ -32,7 +32,8 @@ class NotificationWorker(context: Context, params: WorkerParameters) : Worker(co
 
         val notification = NotificationCompat.Builder(applicationContext,
         NOTIFICATION_CHANNEL_ID)
-            .setContentTitle("Warning")
+            .setContentTitle("Warning water level Bendungan DKI Jakarta is High")
+            .setContentText("DKI Jakarta memasuki SIAGA IV! Harap segera evakuasi.")
             .setSmallIcon(R.drawable.icon_notifications)
             .build()
         notificationManager.notify(NOTIFICATION_ID, notification)

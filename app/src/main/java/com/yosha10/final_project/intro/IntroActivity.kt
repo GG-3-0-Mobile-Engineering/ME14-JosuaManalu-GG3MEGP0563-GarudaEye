@@ -73,6 +73,7 @@ class IntroActivity : AppCompatActivity() {
                 savePrefData()
                 val intent = Intent(this@IntroActivity, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             }
         }
 
