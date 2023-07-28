@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
     <application
         android:name=".DisasterApplication"
         android:allowBackup="true"
@@ -17,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
+        <activity
+            android:name=".intro.IntroActivity"
+            android:exported="false" />
         <activity
             android:name=".splash.SplashActivity"
             android:exported="true">
@@ -51,7 +56,7 @@
 
         <activity
             android:name=".main.MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

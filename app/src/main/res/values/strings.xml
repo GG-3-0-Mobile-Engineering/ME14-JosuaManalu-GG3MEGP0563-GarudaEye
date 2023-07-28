@@ -1,12 +1,38 @@
 <resources>
-    <string name="app_name">Final-Project</string>
-    <string name="title_activity_maps">MapsActivity</string>
+    <string name="app_name">GarudaEye</string>
+    <string name="app_description">Aplikasi Informasi Bencana Alam\n di Indonesia</string>
+
+    <!-- Activity Title -->
     <string name="title_activity_settings">Settings</string>
 
     <string name="search_hint">Search…</string>
     <string name="no_title">Tidak ada judul</string>
     <string name="no_description">Tidak ada deskripsi</string>
     <string name="created_at_text">Created At: %1$s</string>
+    <string name="item_image_disaster">Gambar Bencana</string>
+    <string name="filter_disaster">Filter Disaster</string>
+    <string name="settings">Settings</string>
+    <string name="error_message">Oops.. Data tidak ada</string>
+
+    <!-- Intro -->
+    <string name="packageApp">com.yosha10.final_project</string>
+    <string name="shared_pref_key_intro">isRunFirstTime</string>
+    <string name="get_started">Get Started</string>
+    <string name="next">Next</string>
+
+    <string name="intro_title_1">Selamat datang di Aplikasi GarudaEye!</string>
+    <string name="intro_desc_1">Aplikasi ini bertujuan untuk memberikan informasi lengkap dan terkini mengenai bencana alam di seluruh wilayah Indonesia.</string>
+    <string name="intro_animation_1">animation_intro_screen_1.json</string>
+
+    <string name="intro_title_2">Fitur-fitur yang kami tawarkan:</string>
+    <string name="intro_desc_2">- Notifikasi peringatan dini bencana \n- Peta interaktif dengan lokasi bencana dan lokasi evakuasi
+\n - Informasi bencana terbaru dan tips keselamatan</string>
+    <string name="intro_animation_2">animation_intro_screen_2.json</string>
+
+    <string name="intro_title_3">Finally!!!</string>
+    <string name="intro_desc_3">Kami berkomitmen untuk memberikan informasi yang akurat dan bermanfaat bagi Anda. \n
+                        Selamat menggunakan aplikasi GarudaEye!</string>
+    <string name="intro_animation_3">animation_intro_screen_3.json</string>
 
 
     <!-- Preference Titles -->
@@ -27,17 +53,6 @@
     <string name="dark_mode_on">Dark mode</string>
     <string name="dark_mode_off">Light mode</string>
 
-    <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
-
-    <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
-
     <!-- Filter Disasters -->
     <string name="filter_flood">Banjir</string>
     <string name="filter_earthquake">Gempa Bumi</string>
@@ -45,9 +60,5 @@
     <string name="filter_haze">Kabut Asap</string>
     <string name="filter_fire">Kebakaran Hutan</string>
     <string name="filter_volcano">Gunung Api</string>
-    <string name="item_image_disaster">Gambar Bencana</string>
-    <string name="filter_disaster">Filter Disaster</string>
-    <string name="settings">Settings</string>
-    <string name="error_message">Oops.. Data tidak ada</string>
 
 </resources>

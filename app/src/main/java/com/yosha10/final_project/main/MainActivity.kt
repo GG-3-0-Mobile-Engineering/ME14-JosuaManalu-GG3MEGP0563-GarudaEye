@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.work.Data
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkManager
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,8 +30,10 @@ import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
 import com.yosha10.final_project.core.utils.Region
 import com.yosha10.final_project.databinding.ActivityMainBinding
+import com.yosha10.final_project.notification.NotificationWorker
 import com.yosha10.final_project.setting.SettingsActivity
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var _activityMainBinding: ActivityMainBinding? = null
@@ -76,6 +81,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        // Show Notification
+        setupNotification()
     }
 
     override fun onDestroy() {
@@ -131,15 +139,16 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                     mMap.clear()
                                     report.data.forEach { item ->
                                         val disasterType = item.properties.disaster_type
-                                        val disasterTypeText = when(DisasterType.valueOf(disasterType.uppercase())) {
-                                            // the color of the badge card will change based on disaster type
-                                            DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
-                                            DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
-                                            DisasterType.FIRE -> DisasterType.FIRE.IDvalue
-                                            DisasterType.HAZE -> DisasterType.HAZE.IDvalue
-                                            DisasterType.WIND -> DisasterType.WIND.IDvalue
-                                            DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
-                                        }
+                                        val disasterTypeText =
+                                            when (DisasterType.valueOf(disasterType.uppercase())) {
+                                                // the color of the badge card will change based on disaster type
+                                                DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
+                                                DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
+                                                DisasterType.FIRE -> DisasterType.FIRE.IDvalue
+                                                DisasterType.HAZE -> DisasterType.HAZE.IDvalue
+                                                DisasterType.WIND -> DisasterType.WIND.IDvalue
+                                                DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
+                                            }
 
                                         val createdAt =
                                             DateFormatter.formatDate(item.properties.created_at)
@@ -185,7 +194,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
-    private fun setupSearchViewSuggestion(){
+    private fun setupSearchViewSuggestion() {
         with(binding) {
             val regionAdapter = RegionListAdapter { item ->
                 searchBar.text = item
@@ -280,5 +289,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             show()
         }
+    }
+
+    private fun setupNotification() {
+        val workManager = WorkManager.getInstance(this@MainActivity)
+
+        val data = Data.Builder()
+            .putString(NotificationWorker.NOTIFICATION_CHANNEL_ID, "Water Level Alert")
+            .build()
+
+        val periodicWorkReq =
+            PeriodicWorkRequest.Builder(NotificationWorker::class.java, 30, TimeUnit.MINUTES)
+                .setInputData(data)
+                .build()
+
+        workManager.enqueue(periodicWorkReq)
+
     }
 }
