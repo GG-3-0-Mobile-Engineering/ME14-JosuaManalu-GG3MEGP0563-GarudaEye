@@ -43,6 +43,13 @@ git clone https://github.com/username/nama-repo.git
 
 ## Tampilan Aplikasi
 Berikut adalah beberapa tangkapan layar aplikasi yang menunjukkan berbagai fitur yang tersedia dalam GarudaEye.
+1. Light Mode
+![Layout-GarudaEye-Light-1](https://drive.google.com/file/d/1Oh5kbJ-OWtWDZTRGTzv1P6DkwOWGFUgB/view?usp=drive_link)
+![Layout-GarudaEye-Light-2](https://drive.google.com/file/d/1QDKXFrFc_t5QVkavAZxJZ5sLlhV65PyU/view?usp=drive_link)
+
+2. Dark Mode
+![Layout-GarudaEye-Dark-1](https://drive.google.com/file/d/1pwxXo0gmvdeMP-DIUPWIUnaHCFS8Jqe-/view?usp=drive_link)
+![Layout-GarudaEye-Dark-2](https://drive.google.com/file/d/1qZii_LvYfzSKR60_GywAm3HsRUh_ySU0/view?usp=drive_link)
 
 Aplikasi bisa di download di link berikut ini:
 https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=sharing
