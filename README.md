@@ -22,7 +22,7 @@ Aplikasi GarudaEye menyediakan berbagai fitur yang membantu pengguna untuk menda
 
 4. **Tampilan Peta**: Aplikasi menampilkan peta yang menunjukkan lokasi bencana di Indonesia.
 
-5. **Notifikasi Peringatan Level Air Bendungan**: Pengguna akan menerima notifikasi peringatan jika level air di bendungan naik.
+5. **Notifikasi Peringatan Level Air Bendungan**: Pengguna akan menerima notifikasi peringatan jika level air di bendungan naik. (Untuk sementara data dari fitur ini sifatnya masih dummy karena datanya kosong dari API endpoint /floodgauges(untuk mendapatkan level ketinggian air di suatu wilayah).
 
 6. **Tema Dark Mode**: Aplikasi mendukung tema dark mode untuk kenyamanan pengguna dalam menggunakannya pada malam hari.
 
@@ -51,7 +51,7 @@ https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=shari
 Jika Anda ingin berkontribusi pada proyek ini, Anda dapat mengirimkan Pull Request ke repository ini. Kami sangat menghargai kontribusi dari para pengguna.
 
 ## Kontak
-Jika Anda memiliki pertanyaan atau saran terkait aplikasi ini, Anda dapat menghubungi tim GarudaEye melalui email support@garudaeye.com.
+Jika Anda memiliki pertanyaan atau saran terkait aplikasi ini, Anda dapat menghubungi tim GarudaEye melalui email josuamnalu@gmail.com.
 
 ## Lisensi
 Aplikasi GarudaEye dirilis di bawah lisensi MIT. Untuk informasi lebih lanjut tentang lisensi, silakan lihat LICENSE.
