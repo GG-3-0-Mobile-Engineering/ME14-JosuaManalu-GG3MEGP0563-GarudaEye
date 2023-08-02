@@ -44,18 +44,19 @@ GarudaEye App provides various features that help users to get up-to-date inform
 
 ## Installation
 To use this application, follow the steps below:
-1. Clone this repository to your device using the following command:
+1. Ensure that your Android device has a minimum API level of 24.
+2. Clone this repository to your device using the following command:
 ```bash
 git clone https://github.com/GG-3-0-Mobile-Engineering/ME14-JosuaManalu-GG3MEGP0563-GarudaEye.git
 ```
-2. Open the project in Android Studio.
-3. Make sure you have a Google Maps API key to display the map in the application
+3. Open the project in Android Studio.
+4. Make sure you have a Google Maps API key to display the map in the application
 (You need to obtain the API key from [here](https://developers.google.com/maps/documentation/android-sdk/get-api-key)).
-4. After that, you can search for the local.properties file and insert your Google Maps API key into it as follows:
+5. After that, you can search for the local.properties file and insert your Google Maps API key into it as follows:
 ```bash
 MAPS_API_KEY=PutYourAPIKeyHere
 ```
-5. Finally, build and run the application.
+6. Finally, build and run the application.
 
 ## App Screenshots
 Here are some screenshots of the application that showcase various features available in GarudaEye.
