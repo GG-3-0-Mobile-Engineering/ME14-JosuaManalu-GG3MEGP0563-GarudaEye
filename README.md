@@ -35,7 +35,7 @@ Untuk menggunakan aplikasi ini, ikuti langkah-langkah di bawah ini:
 1. Clone repository ini ke dalam perangkat Anda dengan perintah berikut:
 
 ```bash
-git clone https://github.com/username/nama-repo.git
+git clone https://github.com/GG-3-0-Mobile-Engineering/ME14-JosuaManalu-GG3MEGP0563-GarudaEye.git
 ```
 
 2. Buka project di Android Studio.
@@ -43,14 +43,14 @@ git clone https://github.com/username/nama-repo.git
 
 ## Tampilan Aplikasi
 Berikut adalah beberapa tangkapan layar aplikasi yang menunjukkan berbagai fitur yang tersedia dalam GarudaEye.
-1. Light Mode
-![Layout-GarudaEye-Light-1](img/Layout-GarudaEye-Light-1.png)
-![Layout-GarudaEye-Light-2](img/Layout-GarudaEye-Light-2.png)
+| Mode  | Feed | 
+|-------|-------|
+| Light | ![Layout-GarudaEye-Light-1](img/Layout-GarudaEye-Light-1.png) |
+| | ![Layout-GarudaEye-Light-2](img/Layout-GarudaEye-Light-2.png) |
+| Dark | ![Layout-GarudaEye-Dark-1](img/Layout-GarudaEye-Dark-1.png) |
+| | ![Layout-GarudaEye-Dark-2](img/Layout-GarudaEye-Dark-2.png) |
 
-2. Dark Mode
-![Layout-GarudaEye-Dark-1](img/Layout-GarudaEye-Dark-1.png)
-![Layout-GarudaEye-Dark-2](img/Layout-GarudaEye-Dark-2.png)
-
+## Download GarudaEye App
 Aplikasi bisa di download di link berikut ini:
 https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=sharing
 
