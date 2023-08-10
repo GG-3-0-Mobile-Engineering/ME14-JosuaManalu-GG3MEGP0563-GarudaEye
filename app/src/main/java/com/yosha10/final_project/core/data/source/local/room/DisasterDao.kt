@@ -4,13 +4,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.yosha10.final_project.core.data.source.local.entity.PropertiesReportEntity
+import kotlinx.coroutines.flow.Flow
 
 interface DisasterDao {
     @Query("SELECT * FROM properties_report WHERE admin = :admin AND disaster_type = :disasterType")
     fun getAllDisaster(
         admin: String,
         disasterType: String
-    )
+    ): Flow<List<PropertiesReportEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDisaster(disaster: List<PropertiesReportEntity>)
