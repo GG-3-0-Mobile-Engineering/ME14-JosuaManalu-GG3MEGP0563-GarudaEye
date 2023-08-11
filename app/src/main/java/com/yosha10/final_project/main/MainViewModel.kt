@@ -1,16 +1,16 @@
 package com.yosha10.final_project.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.yosha10.final_project.core.data.Resource
-import com.yosha10.final_project.core.domain.model.UrunDayaReport
+import androidx.lifecycle.asLiveData
 import com.yosha10.final_project.core.domain.usecase.DisasterUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MainViewModel(private val disasterUseCase: DisasterUseCase): ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val disasterUseCase: DisasterUseCase): ViewModel() {
 
     fun getAllReport(
         admin: String? = null,
-        disaster: String? = null,
-        timeperiod: Int? = null,
-    ): LiveData<Resource<List<UrunDayaReport>>> = disasterUseCase.getAllReport(admin, disaster, timeperiod)
+        disasterType: String? = null,
+    ) = disasterUseCase.getAllReport(admin, disasterType).asLiveData()
 }
