@@ -30,4 +30,10 @@ data class PropertiesReportEntity(
 
     @ColumnInfo(name = "admin")
     val admin: String? = null,
+
+    @ColumnInfo(name = "lat")
+    val lat: Double? = 0.0,
+
+    @ColumnInfo(name = "lon")
+    val lon: Double? = 0.0,
 )
