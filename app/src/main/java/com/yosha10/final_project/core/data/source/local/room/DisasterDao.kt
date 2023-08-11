@@ -11,13 +11,13 @@ interface DisasterDao {
             "WHERE (:admin IS NULL OR admin = :admin) " +
             "AND (:disasterType IS NULL OR disaster_type = :disasterType)")
     fun getAllDisaster(
-        admin: String,
-        disasterType: String
+        admin: String? = null,
+        disasterType: String? = null
     ): Flow<List<PropertiesReportEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDisaster(disaster: List<PropertiesReportEntity>)
-    
+
     @Query("DELETE FROM properties_report")
     suspend fun deleteAllDisaster()
 }
