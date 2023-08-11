@@ -26,17 +26,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
+
     buildFeatures {
         viewBinding=true
         buildConfig=true
     }
+    namespace 'com.yosha10.final_project'
 }
 
 dependencies {
@@ -73,12 +76,19 @@ dependencies {
     implementation "androidx.room:room-runtime:2.5.2"
     ksp "androidx.room:room-compiler:2.5.2"
     androidTestImplementation "androidx.room:room-testing:2.5.2"
+    implementation "androidx.room:room-ktx:2.5.2"
 
     // Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    ksp "com.google.dagger:hilt-android-compiler:2.44"
+    implementation "com.google.dagger:hilt-android:2.47"
+    ksp "com.google.dagger:hilt-android-compiler:2.47"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3"
+
+    // Lifecycle Livedata
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
+
+    // Activity Ktx
+    implementation "androidx.activity:activity-ktx:1.7.2"
 }
