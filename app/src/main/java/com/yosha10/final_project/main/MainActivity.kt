@@ -6,9 +6,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.PopupMenu
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.work.Data
 import androidx.work.PeriodicWorkRequest
@@ -25,21 +25,21 @@ import com.yosha10.final_project.R
 import com.yosha10.final_project.core.data.Resource
 import com.yosha10.final_project.core.ui.DisasterListAdapter
 import com.yosha10.final_project.core.ui.RegionListAdapter
-import com.yosha10.final_project.core.ui.ViewModelFactory
 import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
 import com.yosha10.final_project.core.utils.Region
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.notification.NotificationWorker
 import com.yosha10.final_project.setting.SettingsActivity
-import java.util.Locale
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.concurrent.TimeUnit
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private var _activityMainBinding: ActivityMainBinding? = null
     private val binding get() = _activityMainBinding!!
 
-    private lateinit var mainViewModel: MainViewModel
+    private val mainViewModel: MainViewModel by viewModels()
 
     private lateinit var mMap: GoogleMap
 
@@ -52,8 +52,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private var mapNotReady: Boolean = true
 
-    val regions = Region.listRegions
-
+    private val regions = Region.listRegions
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,10 +68,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         // Show SearchBar and SearchView
         setupSearchBar()
         setupSearchViewSuggestion()
-
-        // Init ViewModel
-        val factory = ViewModelFactory.getInstance(this@MainActivity)
-        mainViewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         // Call All Report
         callApi()
@@ -122,7 +117,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         admin: String? = null,
         disaster: String? = null,
     ) {
-        mainViewModel.getAllReport(admin = admin, disaster = disaster, timeperiod = 172_800)
+        mainViewModel.getAllReport(admin = admin, disasterType = disaster)
             .observe(this) { report ->
                 if (report != null) {
                     when (report) {
@@ -138,7 +133,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                 if (!mapNotReady) {
                                     mMap.clear()
                                     report.data.forEach { item ->
-                                        val disasterType = item.properties.disaster_type
+                                        val disasterType = item.disasterType
                                         val disasterTypeText =
                                             when (DisasterType.valueOf(disasterType.uppercase())) {
                                                 // the color of the badge card will change based on disaster type
@@ -151,9 +146,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                                             }
 
                                         val createdAt =
-                                            DateFormatter.formatDate(item.properties.created_at)
+                                            DateFormatter.formatDate(item.createdAt)
                                         val coordinate =
-                                            LatLng(item.coordinates[1], item.coordinates[0])
+                                            LatLng(item.lat, item.lon)
                                         mMap.addMarker(
                                             MarkerOptions()
                                                 .position(coordinate)
