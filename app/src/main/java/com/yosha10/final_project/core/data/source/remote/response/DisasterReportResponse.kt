@@ -2,52 +2,43 @@ package com.yosha10.final_project.core.data.source.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class UrunDayaReportResponse(
+data class DisasterReportResponse(
 
 	@field:SerializedName("result")
-	val result: Result? = null,
+	val disasterResultResponse: DisasterResultResponse? = null,
 
 	@field:SerializedName("statusCode")
 	val statusCode: Int? = null
 )
 
-data class Tags(
+data class DisasterResultResponse(
 
-	@field:SerializedName("instance_region_code")
-	val instanceRegionCode: String? = null,
-
-	@field:SerializedName("district_id")
-	val districtId: Any? = null,
-
-	@field:SerializedName("local_area_id")
-	val localAreaId: Any? = null,
-
-	@field:SerializedName("region_code")
-	val regionCode: String? = null
+	@field:SerializedName("objects")
+	val disasterObjectsResponse: DisasterObjectsResponse? = null,
 )
 
-data class ReportData(
+data class DisasterObjectsResponse(
 
-	@field:SerializedName("flood_depth")
-	val floodDepth: Int? = null,
-
-	@field:SerializedName("report_type")
-	val reportType: String? = null
+	@field:SerializedName("output")
+	val disasterOutputResponse: DisasterOutputResponse? = null
 )
 
-data class GeometriesItem(
+data class DisasterOutputResponse(
+
+	@field:SerializedName("geometries")
+	val disasterGeometriesResponse: List<DisasterGeometriesResponse>? = null,
+)
+
+data class DisasterGeometriesResponse(
 
 	@field:SerializedName("coordinates")
 	val coordinates: List<Double?>? = null,
 
-	@field:SerializedName("type")
-	val type: String? = null,
-
 	@field:SerializedName("properties")
-	val properties: Properties? = null
+	val disasterResponse: DisasterResponse? = null
 )
 
-data class Properties(
+data class DisasterResponse(
 
 	@field:SerializedName("image_url")
 	val imageUrl: String? = null,
@@ -62,7 +53,7 @@ data class Properties(
 	val title: String? = null,
 
 	@field:SerializedName("tags")
-	val tags: Tags? = null,
+	val disasterTagsResponse: DisasterTagsResponse? = null,
 
 	@field:SerializedName("pkey")
 	val pkey: String? = null,
@@ -74,32 +65,8 @@ data class Properties(
 	val status: String? = null
 )
 
-data class Objects(
+data class DisasterTagsResponse(
 
-	@field:SerializedName("output")
-	val output: Output? = null
-)
-
-data class Output(
-
-	@field:SerializedName("geometries")
-	val geometries: List<GeometriesItem>? = null,
-
-	@field:SerializedName("type")
-	val type: String? = null
-)
-
-data class Result(
-
-	@field:SerializedName("objects")
-	val objects: Objects? = null,
-
-	@field:SerializedName("bbox")
-	val bbox: List<Any?>? = null,
-
-	@field:SerializedName("type")
-	val type: String? = null,
-
-	@field:SerializedName("arcs")
-	val arcs: List<Any?>? = null
+	@field:SerializedName("instance_region_code")
+	val instanceRegionCode: String? = null,
 )
