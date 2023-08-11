@@ -4,11 +4,11 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "properties_report")
-data class PropertiesReportEntity(
+@Entity(tableName = "disaster")
+data class DisasterEntity(
     @PrimaryKey
     @ColumnInfo(name = "pkeyId")
-    val pkeyId: String? = null,
+    val pkeyId: String,
 
     @ColumnInfo(name = "image_url")
     val imageUrl: String? = null,
