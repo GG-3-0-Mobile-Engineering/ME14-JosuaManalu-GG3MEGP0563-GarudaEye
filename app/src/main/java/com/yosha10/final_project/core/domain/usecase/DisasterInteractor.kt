@@ -1,18 +1,17 @@
 package com.yosha10.final_project.core.domain.usecase
 
-import androidx.lifecycle.LiveData
 import com.yosha10.final_project.core.data.Resource
-import com.yosha10.final_project.core.domain.model.UrunDayaReport
+import com.yosha10.final_project.core.domain.model.Disaster
 import com.yosha10.final_project.core.domain.repository.IDisasterRepository
+import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class DisasterInteractor(private val disasterRepository: IDisasterRepository) : DisasterUseCase {
+class DisasterInteractor @Inject constructor(private val disasterRepository: IDisasterRepository) : DisasterUseCase {
 
     override fun getAllReport(
         admin: String?,
-        disaster: String?,
-        timeperiod: Int?
-    ): LiveData<Resource<List<UrunDayaReport>>> {
-        return disasterRepository.getAllReport(admin, disaster, timeperiod)
+        disasterType: String?
+    ): Flow<Resource<List<Disaster>>> {
+        return disasterRepository.getAllReport(admin, disasterType)
     }
-
 }
