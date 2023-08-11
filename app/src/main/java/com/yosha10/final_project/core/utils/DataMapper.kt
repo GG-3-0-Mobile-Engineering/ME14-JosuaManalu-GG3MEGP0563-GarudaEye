@@ -1,40 +1,44 @@
 package com.yosha10.final_project.core.utils
 
-import com.yosha10.final_project.core.data.source.remote.response.GeometriesItem
-import com.yosha10.final_project.core.data.source.remote.response.Properties
-import com.yosha10.final_project.core.data.source.remote.response.UrunDayaReportResponse
-import com.yosha10.final_project.core.domain.model.PropertiesReport
-import com.yosha10.final_project.core.domain.model.UrunDayaReport
-import java.text.SimpleDateFormat
-import java.util.Locale
+import com.yosha10.final_project.core.data.source.local.entity.DisasterEntity
+import com.yosha10.final_project.core.data.source.remote.response.DisasterGeometriesResponse
+import com.yosha10.final_project.core.domain.model.Disaster
 
 object DataMapper {
-    fun mapResponseToDomain(input: List<GeometriesItem>):List<UrunDayaReport>{
-        val reportList = ArrayList<UrunDayaReport>()
+
+    fun mapResponseToEntities(input: List<DisasterGeometriesResponse>): List<DisasterEntity> {
+        val disasterList = ArrayList<DisasterEntity>()
         input.map {
-            val report = UrunDayaReport(
-                type = it.type.orEmpty(),
-                properties = PropertiesReport(
-                    pkey = it.properties?.pkey.orEmpty(),
-                    created_at = it.properties?.createdAt.orEmpty(),
-                    source = it.properties?.source.orEmpty(),
-                    status = it.properties?.status.orEmpty(),
-                    url = it.properties?.url.orEmpty(),
-                    image_url = it.properties?.imageUrl.orEmpty(),
-                    disaster_type = it.properties?.disasterType.orEmpty(),
-                    text = it.properties?.text.orEmpty(),
-                    title = it.properties?.title.orEmpty(),
-                ),
-                coordinates = (it.coordinates ?: listOf(0.0, 0.0)) as List<Double>
+            val disaster = DisasterEntity(
+                pkeyId = it.disasterResponse?.pkey.orEmpty(),
+                imageUrl = it.disasterResponse?.imageUrl.orEmpty(),
+                disasterType = it.disasterResponse?.disasterType.orEmpty(),
+                createdAt = it.disasterResponse?.createdAt.orEmpty(),
+                title = it.disasterResponse?.title.orEmpty(),
+                text = it.disasterResponse?.text.orEmpty(),
+                status = it.disasterResponse?.status.orEmpty(),
+                admin = it.disasterResponse?.disasterTagsResponse?.instanceRegionCode.orEmpty(),
+                lat = it.coordinates?.get(1) ?: 0.0,
+                lon = it.coordinates?.get(0) ?: 0.0,
             )
-            reportList.add(report)
+            disasterList.add(disaster)
         }
-        return reportList
+        return disasterList
     }
 
-    private fun formatCreatedAtDate(date: String): Long {
-        return date?.let {
-            SimpleDateFormat("dd MMMM yyyy HH:mm:ss", Locale.US).parse(it).time
-        } ?: Long.MIN_VALUE
-    }
+    fun mapEntitiesToDomain(input: List<DisasterEntity>): List<Disaster> =
+        input.map {
+            Disaster(
+                pkey = it.pkeyId.orEmpty(),
+                createdAt = it.createdAt.orEmpty(),
+                status = it.status.orEmpty(),
+                imageUrl = it.imageUrl.orEmpty(),
+                disasterType = it.disasterType.orEmpty(),
+                title = it.title.orEmpty(),
+                text = it.text.orEmpty(),
+                admin = it.admin.orEmpty(),
+                lat = it.lat ?: 0.0,
+                lon = it.lon ?: 0.0,
+            )
+        }
 }
