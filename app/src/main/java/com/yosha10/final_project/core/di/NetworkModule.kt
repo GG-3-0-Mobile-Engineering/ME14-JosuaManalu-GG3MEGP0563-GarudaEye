@@ -1,7 +1,6 @@
 package com.yosha10.final_project.core.di
 
 import com.yosha10.final_project.BuildConfig
-import com.yosha10.final_project.core.data.source.remote.network.ApiConfig
 import com.yosha10.final_project.core.data.source.remote.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -18,7 +17,7 @@ import java.util.concurrent.TimeUnit
 class NetworkModule {
 
     @Provides
-    private fun provideOkHttpClient(): OkHttpClient {
+     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = if (BuildConfig.DEBUG) {
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         } else {
