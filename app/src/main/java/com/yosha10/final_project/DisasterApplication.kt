@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.yosha10.final_project.core.utils.DarkMode
+import dagger.hilt.android.HiltAndroidApp
 import java.util.Locale
 
+@HiltAndroidApp
 class DisasterApplication : Application() {
     override fun onCreate() {
         super.onCreate()
