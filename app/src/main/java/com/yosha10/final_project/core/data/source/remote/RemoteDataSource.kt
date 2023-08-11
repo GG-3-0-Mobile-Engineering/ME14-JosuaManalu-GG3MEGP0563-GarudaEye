@@ -1,52 +1,33 @@
 package com.yosha10.final_project.core.data.source.remote
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.yosha10.final_project.core.data.source.remote.network.ApiResponse
 import com.yosha10.final_project.core.data.source.remote.network.ApiService
-import com.yosha10.final_project.core.data.source.remote.response.GeometriesItem
-import com.yosha10.final_project.core.data.source.remote.response.UrunDayaReportResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.yosha10.final_project.core.data.source.remote.response.DisasterGeometriesResponse
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteDataSource private constructor(private val apiService: ApiService) {
-    companion object {
-        @Volatile
-        private var INSTANCE: RemoteDataSource? = null
-
-        fun getInstance(service: ApiService): RemoteDataSource =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: RemoteDataSource(service)
-            }
-    }
-
-    fun getAllReport(
+@Singleton
+class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
+    suspend fun getAllReport(
         admin: String? = null,
-        disaster: String? = null,
-        timeperiod: Int? = null
-    ): LiveData<ApiResponse<List<GeometriesItem>>> {
-
-        val resultData = MutableLiveData<ApiResponse<List<GeometriesItem>>>()
-
-        val client = apiService.getAllReport(admin, disaster, timeperiod)
-        client.enqueue(object : Callback<UrunDayaReportResponse> {
-            override fun onResponse(
-                call: Call<UrunDayaReportResponse>,
-                response: Response<UrunDayaReportResponse>
-            ) {
-                val dataArray = response.body()?.result?.objects?.output?.geometries
-                resultData.value =
-                    if (dataArray != null) ApiResponse.Success(dataArray) else ApiResponse.Empty
+        disasterType: String? = null,
+    ): Flow<ApiResponse<List<DisasterGeometriesResponse>>> {
+        return flow {
+            try {
+                val response = apiService.getAllReport(admin, disasterType)
+                val dataArray = response.disasterResultResponse?.disasterObjectsResponse?.disasterOutputResponse?.disasterGeometriesResponse
+                if (!dataArray.isNullOrEmpty()) {
+                    emit(ApiResponse.Success(dataArray))
+                } else {
+                    emit(ApiResponse.Empty)
+                }
+            } catch (e: Exception) {
+                emit(ApiResponse.Error(e.toString()))
             }
-
-            override fun onFailure(call: Call<UrunDayaReportResponse>, t: Throwable) {
-                resultData.value = ApiResponse.Error(t.message.toString())
-                Log.e("RemoteDataSource", t.message.toString())
-            }
-
-        })
-        return resultData
+        }.flowOn(Dispatchers.IO)
     }
 }
