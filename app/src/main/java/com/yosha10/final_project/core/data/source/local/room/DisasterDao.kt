@@ -7,7 +7,9 @@ import com.yosha10.final_project.core.data.source.local.entity.PropertiesReportE
 import kotlinx.coroutines.flow.Flow
 
 interface DisasterDao {
-    @Query("SELECT * FROM properties_report WHERE admin = :admin AND disaster_type = :disasterType")
+    @Query("SELECT * FROM properties_report " +
+            "WHERE (:admin IS NULL OR admin = :admin) " +
+            "AND (:disasterType IS NULL OR disaster_type = :disasterType)")
     fun getAllDisaster(
         admin: String,
         disasterType: String
@@ -15,4 +17,7 @@ interface DisasterDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertDisaster(disaster: List<PropertiesReportEntity>)
+    
+    @Query("DELETE FROM properties_report")
+    suspend fun deleteAllDisaster()
 }
