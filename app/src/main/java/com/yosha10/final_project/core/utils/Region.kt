@@ -37,4 +37,8 @@ object Region {
         "Sulawesi Barat" to "ID-SR",
         "Sumatera Barat" to "ID-SB"
     )
+
+    fun getRegionName(regionCode: String): String {
+        return listRegions.filterValues { it == regionCode }.keys.first()
+    }
 }
