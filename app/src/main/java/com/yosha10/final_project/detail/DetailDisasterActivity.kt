@@ -1,7 +1,7 @@
 package com.yosha10.final_project.detail
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.yosha10.final_project.R
 import com.yosha10.final_project.core.domain.model.Disaster
@@ -36,7 +36,7 @@ class DetailDisasterActivity : AppCompatActivity() {
                 tvDetailCreatedAt.text = getString(R.string.created_at_text, DateFormatter.formatDate(data.createdAt))
                 tvDetailDisasterType.text = DisasterTypeConverter.getDisasterTypeText(DisasterType.valueOf(data.disasterType.uppercase()))
                 tvDetailStatus.text = data.status
-                tvDetailLocation.text = Region.listRegions.filterValues { it == data.admin }.keys.first()
+                tvDetailLocation.text = Region.getRegionName(data.admin)
                 tvDetailDescription.text = data.text
                 Glide.with(this@DetailDisasterActivity)
                     .load(data.imageUrl)
@@ -44,6 +44,11 @@ class DetailDisasterActivity : AppCompatActivity() {
                     .into(ivDetailImage)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _activityDetailDisasterBinding = null
     }
 
     companion object {
