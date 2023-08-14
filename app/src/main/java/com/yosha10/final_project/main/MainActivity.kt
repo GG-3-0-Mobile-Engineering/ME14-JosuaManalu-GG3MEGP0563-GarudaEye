@@ -23,10 +23,12 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.yosha10.final_project.R
 import com.yosha10.final_project.core.data.Resource
+import com.yosha10.final_project.core.domain.model.Disaster
 import com.yosha10.final_project.core.ui.DisasterListAdapter
 import com.yosha10.final_project.core.ui.RegionListAdapter
 import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
+import com.yosha10.final_project.core.utils.DisasterTypeConverter
 import com.yosha10.final_project.core.utils.Region
 import com.yosha10.final_project.databinding.ActivityMainBinding
 import com.yosha10.final_project.detail.DetailDisasterActivity
@@ -61,9 +63,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         _activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Hide Action Bar
-//        supportActionBar?.hide()
-
         // Init Adapter
         setupDisasterAdapter()
 
@@ -72,7 +71,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setupSearchViewSuggestion()
 
         // Call All Report
-        callApi()
+        callAllReport()
 
         // Show Map Fragment
         val mapFragment = supportFragmentManager
@@ -101,17 +100,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
-        mMap.uiSettings.apply {
-            isZoomControlsEnabled = true
-            isIndoorLevelPickerEnabled = true
-            isCompassEnabled = true
-            isMapToolbarEnabled = true
+        with(mMap) {
+            uiSettings.apply {
+                isZoomControlsEnabled = true
+                isIndoorLevelPickerEnabled = true
+                isCompassEnabled = true
+                isMapToolbarEnabled = true
+            }
+            setPadding(0, 0, 0, 600)
         }
-        mMap.setPadding(0, 0, 0, 600)
         mapNotReady = !mapNotReady
     }
 
-    private fun callApi() {
+    private fun callAllReport() {
         getAllReport(admin = filterLocation, disaster = filterDisaster)
     }
 
@@ -132,52 +133,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             } else {
                                 showTvError(false)
                                 disasterListAdapter.setData(report.data)
-                                if (!mapNotReady) {
-                                    mMap.clear()
-                                    report.data.forEach { item ->
-                                        val disasterType = item.disasterType
-                                        val disasterTypeText =
-                                            when (DisasterType.valueOf(disasterType.uppercase())) {
-                                                // the color of the badge card will change based on disaster type
-                                                DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
-                                                DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
-                                                DisasterType.FIRE -> DisasterType.FIRE.IDvalue
-                                                DisasterType.HAZE -> DisasterType.HAZE.IDvalue
-                                                DisasterType.WIND -> DisasterType.WIND.IDvalue
-                                                DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
-                                            }
-
-                                        val createdAt =
-                                            DateFormatter.formatDate(item.createdAt)
-                                        val coordinate =
-                                            LatLng(item.lat, item.lon)
-                                        mMap.addMarker(
-                                            MarkerOptions()
-                                                .position(coordinate)
-                                                .title(disasterTypeText)
-                                                .icon(
-                                                    BitmapDescriptorFactory.defaultMarker()
-                                                )
-                                                .snippet(
-                                                    getString(
-                                                        R.string.created_at_text,
-                                                        createdAt
-                                                    )
-                                                )
-                                        )
-                                        boundsBuilder.include(coordinate)
-
-                                        val bounds: LatLngBounds = boundsBuilder.build()
-                                        mMap.animateCamera(
-                                            CameraUpdateFactory.newLatLngBounds(
-                                                bounds,
-                                                resources.displayMetrics.widthPixels,
-                                                resources.displayMetrics.heightPixels,
-                                                300
-                                            )
-                                        )
-                                    }
-                                }
+                                showMap(report.data)
                             }
                         }
 
@@ -191,13 +147,52 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
     }
 
+    private fun showMap(report: List<Disaster>?) {
+        if (!mapNotReady) {
+            mMap.clear()
+            report?.forEach { item ->
+                val disasterType = DisasterType.valueOf(item.disasterType.uppercase())
+                val disasterTypeText = DisasterTypeConverter.getDisasterTypeText(disasterType)
+                val location = Region.getRegionName(item.admin)
+
+                val createdAt = DateFormatter.formatDate(item.createdAt)
+                val coordinate = LatLng(item.lat, item.lon)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(coordinate)
+                        .title(getString(R.string.custom_title_map, disasterTypeText, location))
+                        .icon(
+                            BitmapDescriptorFactory.defaultMarker()
+                        )
+                        .snippet(
+                            getString(
+                                R.string.created_at_text,
+                                createdAt
+                            )
+                        )
+                )
+                boundsBuilder.include(coordinate)
+
+                val bounds: LatLngBounds = boundsBuilder.build()
+                mMap.animateCamera(
+                    CameraUpdateFactory.newLatLngBounds(
+                        bounds,
+                        resources.displayMetrics.widthPixels,
+                        resources.displayMetrics.heightPixels,
+                        200
+                    )
+                )
+            }
+        }
+    }
+
     private fun setupSearchViewSuggestion() {
         with(binding) {
             val regionAdapter = RegionListAdapter { item ->
                 searchBar.text = item
                 searchView.hide()
                 filterLocation = regions[item]
-                callApi()
+                callAllReport()
             }
 
             rvRegion.adapter = regionAdapter
@@ -286,7 +281,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 disasterType?.let {
                     filterDisaster = it.name.lowercase()
                 }
-                callApi()
+                callAllReport()
                 true
             }
             show()
@@ -306,6 +301,5 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 .build()
 
         workManager.enqueue(periodicWorkReq)
-
     }
 }
