@@ -5,11 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
-        android:name="com.yosha10.final_project.DisasterApplication"
+        android:name=".DisasterApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -19,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProject"
         tools:targetApi="31">
+        <activity
+            android:name=".detail.DetailDisasterActivity"
+            android:exported="false"
+            android:parentActivityName=".main.MainActivity"/>
         <activity
             android:name=".intro.IntroActivity"
             android:exported="false" />
