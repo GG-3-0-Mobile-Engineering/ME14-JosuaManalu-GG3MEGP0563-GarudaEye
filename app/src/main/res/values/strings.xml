@@ -61,4 +61,14 @@
     <string name="filter_fire">Kebakaran Hutan</string>
     <string name="filter_volcano">Gunung Api</string>
 
+    <!-- Detail Disaster -->
+    <string name="title_detail_disaster_activity">Detail Bencana</string>
+    <string name="image_detail_description">Gambar Detail Bencana</string>
+    <string name="menu_share">Share Informasi Bencana</string>
+    <string name="detail_disaster_type">Tipe Bencana :</string>
+    <string name="detail_created_at">Created at:</string>
+    <string name="detail_location">Lokasi Bencana :</string>
+    <string name="detail_status">Status :</string>
+    <string name="detail_description">Deskripsi :</string>
+
 </resources>
