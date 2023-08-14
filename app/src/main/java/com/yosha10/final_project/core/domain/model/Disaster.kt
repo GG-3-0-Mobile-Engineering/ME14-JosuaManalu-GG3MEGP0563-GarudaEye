@@ -1,5 +1,9 @@
 package com.yosha10.final_project.core.domain.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Disaster(
     val pkey: String,
     val createdAt: String,
@@ -11,4 +15,4 @@ data class Disaster(
     val admin: String,
     val lat: Double,
     val lon: Double,
-)
+): Parcelable
