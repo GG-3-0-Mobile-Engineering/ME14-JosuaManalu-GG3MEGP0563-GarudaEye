@@ -9,6 +9,7 @@
     <string name="no_title">Tidak ada judul</string>
     <string name="no_description">Tidak ada deskripsi</string>
     <string name="created_at_text">Created At: %1$s</string>
+    <string name="custom_title_map">%1$s di %2$s</string>
     <string name="item_image_disaster">Gambar Bencana</string>
     <string name="filter_disaster">Filter Disaster</string>
     <string name="settings">Settings</string>
