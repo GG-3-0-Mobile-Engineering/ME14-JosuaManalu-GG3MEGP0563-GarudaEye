@@ -11,4 +11,26 @@ enum class DisasterType(val IDvalue: String, val value: String, val colorResId: 
     VOLCANO("Gunung Api", "volcano", R.color.colorVolcano)
 }
 
+object DisasterTypeConverter {
+    fun getDisasterTypeText(value: DisasterType): String {
+        return when (value) {
+            DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
+            DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
+            DisasterType.FIRE -> DisasterType.FIRE.IDvalue
+            DisasterType.HAZE -> DisasterType.HAZE.IDvalue
+            DisasterType.WIND -> DisasterType.WIND.IDvalue
+            DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
+        }
+    }
 
+    fun getDisasterTypeColor(value: DisasterType): Int {
+        return when (value) {
+            DisasterType.FLOOD -> DisasterType.FLOOD.colorResId
+            DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.colorResId
+            DisasterType.FIRE -> DisasterType.FIRE.colorResId
+            DisasterType.HAZE -> DisasterType.HAZE.colorResId
+            DisasterType.WIND -> DisasterType.WIND.colorResId
+            DisasterType.VOLCANO -> DisasterType.VOLCANO.colorResId
+        }
+    }
+}
