@@ -27,22 +27,30 @@
         <TextView
             android:id="@+id/item_tv_title"
             style="@style/TextAppearance.Material3.BodyMedium"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
+            android:layout_marginEnd="8dp"
             android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toStartOf="@+id/disaster_type_badge"
             app:layout_constraintStart_toEndOf="@+id/item_iv_disaster"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Title" />
 
         <TextView
             android:id="@+id/item_tv_description"
-            android:layout_width="wrap_content"
+            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="4dp"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            android:layout_marginEnd="16dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/item_iv_disaster"
             app:layout_constraintTop_toBottomOf="@+id/item_tv_title"
             tools:text="Description" />
