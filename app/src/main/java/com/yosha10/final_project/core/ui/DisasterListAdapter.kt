@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.yosha10.final_project.R
 import com.yosha10.final_project.core.domain.model.Disaster
 import com.yosha10.final_project.core.utils.DisasterType
+import com.yosha10.final_project.core.utils.DisasterTypeConverter
 import com.yosha10.final_project.databinding.ItemListDisasterBinding
 
 class DisasterListAdapter : RecyclerView.Adapter<DisasterListAdapter.DisasterListViewHolder>() {
@@ -50,16 +51,8 @@ class DisasterListAdapter : RecyclerView.Adapter<DisasterListAdapter.DisasterLis
                     data.text,
                     itemView.context.getString(R.string.no_description)
                 )
-                val disasterType = data.disasterType
-                val disasterTypeText = when(DisasterType.valueOf(disasterType.uppercase())) {
-                    // the color of the badge card will change based on disaster type
-                    DisasterType.FLOOD -> DisasterType.FLOOD.IDvalue
-                    DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.IDvalue
-                    DisasterType.FIRE -> DisasterType.FIRE.IDvalue
-                    DisasterType.HAZE -> DisasterType.HAZE.IDvalue
-                    DisasterType.WIND -> DisasterType.WIND.IDvalue
-                    DisasterType.VOLCANO -> DisasterType.VOLCANO.IDvalue
-                }
+                val disasterType = DisasterType.valueOf(data.disasterType.uppercase())
+                val disasterTypeText = DisasterTypeConverter.getDisasterTypeText(disasterType)
                 itemTvDisasterType.text = disasterTypeText
 
                 Glide.with(itemView.context)
@@ -67,17 +60,7 @@ class DisasterListAdapter : RecyclerView.Adapter<DisasterListAdapter.DisasterLis
                     .placeholder(R.drawable.placeholder_image)
                     .into(itemIvDisaster)
 
-
-                val colorBadge = when(DisasterType.valueOf(disasterType.uppercase())) {
-                    // the color of the badge card will change based on disaster type
-                    DisasterType.FLOOD -> DisasterType.FLOOD.colorResId
-                    DisasterType.EARTHQUAKE -> DisasterType.EARTHQUAKE.colorResId
-                    DisasterType.FIRE -> DisasterType.FIRE.colorResId
-                    DisasterType.HAZE -> DisasterType.HAZE.colorResId
-                    DisasterType.WIND -> DisasterType.WIND.colorResId
-                    DisasterType.VOLCANO -> DisasterType.VOLCANO.colorResId
-                }
-
+                val colorBadge = DisasterTypeConverter.getDisasterTypeColor(disasterType)
                 disasterTypeBadge.setCardBackgroundColor(ContextCompat.getColor(itemView.context, colorBadge))
             }
         }
