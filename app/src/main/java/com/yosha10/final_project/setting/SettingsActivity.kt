@@ -19,6 +19,7 @@ class SettingsActivity : AppCompatActivity() {
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         }
+        setSupportActionBar(findViewById(R.id.toolbar_setting))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_activity_settings)
     }
