@@ -29,6 +29,8 @@ import com.yosha10.final_project.core.utils.DateFormatter
 import com.yosha10.final_project.core.utils.DisasterType
 import com.yosha10.final_project.core.utils.Region
 import com.yosha10.final_project.databinding.ActivityMainBinding
+import com.yosha10.final_project.detail.DetailDisasterActivity
+import com.yosha10.final_project.detail.DetailDisasterActivity.Companion.EXTRA_DATA
 import com.yosha10.final_project.notification.NotificationWorker
 import com.yosha10.final_project.setting.SettingsActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -60,7 +62,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         // Hide Action Bar
-        supportActionBar?.hide()
+//        supportActionBar?.hide()
 
         // Init Adapter
         setupDisasterAdapter()
@@ -249,6 +251,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun setupDisasterAdapter() {
         disasterListAdapter = DisasterListAdapter()
+        disasterListAdapter.onItemClick = { data ->
+            val intentDetail = Intent(this, DetailDisasterActivity::class.java)
+            intentDetail.putExtra(EXTRA_DATA, data)
+            startActivity(intentDetail)
+        }
         with(binding.myBottomSheet.rvListDisaster) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             setHasFixedSize(true)
