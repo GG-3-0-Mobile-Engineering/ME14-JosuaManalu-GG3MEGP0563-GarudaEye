@@ -121,7 +121,7 @@ By combining Clean Architecture with MVVM and leveraging Hilt for dependency inj
 
 ## Download GarudaEye App
 The application can be downloaded at the following link:
-<a href="https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=sharing">Click here.</a>
+<a href="[https://drive.google.com/file/d/1WwJognsJKK92IZxyC1qlHE3oQT-Z9ndS/view?usp=sharing](https://github.com/GG-3-0-Mobile-Engineering/ME14-JosuaManalu-GG3MEGP0563-GarudaEye/releases/download/1.0/GarudaEye.apk)">Click here.</a>
 
 ## Contribution
 If you wish to contribute to this project, you can submit a Pull Request to this repository. I highly appreciate contributions from users.
