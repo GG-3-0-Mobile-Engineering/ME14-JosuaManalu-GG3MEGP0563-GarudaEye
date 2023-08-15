@@ -26,7 +26,7 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
                     emit(ApiResponse.Empty)
                 }
             } catch (e: Exception) {
-                emit(ApiResponse.Error(e.toString()))
+                emit(ApiResponse.Error("Network error"))
             }
         }.flowOn(Dispatchers.IO)
     }
