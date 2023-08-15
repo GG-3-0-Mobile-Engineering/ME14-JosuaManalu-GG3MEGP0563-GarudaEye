@@ -5,6 +5,7 @@ plugins {
     id 'com.google.devtools.ksp'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-parcelize'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -63,10 +64,23 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.3.0'
     implementation 'androidx.preference:preference:1.2.0'
+    implementation 'androidx.test:core-ktx:1.5.0'
+    implementation 'androidx.test.ext:junit-ktx:1.1.5'
 
+    // JUnit
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:4.4.0'
+    testImplementation 'org.mockito:mockito-inline:4.4.0'
+
+    // Coroutine Test
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3"
+
+    // AndroidX Test
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
 
     // Lottie Animation
     implementation "com.airbnb.android:lottie:6.1.0"
@@ -92,4 +106,6 @@ dependencies {
 
     // Activity Ktx
     implementation "androidx.activity:activity-ktx:1.7.2"
+
+    testImplementation "io.mockk:mockk:1.12.0"
 }
