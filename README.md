@@ -119,6 +119,17 @@ For more information on Hilt, you can refer to the official [Hilt documentation]
 
 By combining Clean Architecture with MVVM and leveraging Hilt for dependency injection, our app becomes modular, maintainable, and testable, enhancing both the development process and the overall quality of the codebase.
 
+## Test Coverage Result
+After running our unit tests, I consistently aim for high test coverage to ensure that our code is thoroughly tested. Here's a recent test coverage result for all classes:
+
+- Lines: 23.2% (214/921)
+- Method: 20.7% (47/227)	
+- Classes: 33.3% (29/87)
+<img src="img/code-coverage.png" alt="Unit Tests Coverage">
+
+Remember that test coverage is just one metric; it's essential to focus on meaningful test scenarios and edge cases rather than simply aiming for high percentages.
+By incorporating mock objects into our unit testing strategy, we maintain a robust and reliable codebase while enabling efficient and comprehensive testing.
+
 ## Download GarudaEye App
 The application can be downloaded at the following link:
 <a href="https://github.com/GG-3-0-Mobile-Engineering/ME14-JosuaManalu-GG3MEGP0563-GarudaEye/releases/download/1.0/GarudaEye.apk">Click here.</a>
