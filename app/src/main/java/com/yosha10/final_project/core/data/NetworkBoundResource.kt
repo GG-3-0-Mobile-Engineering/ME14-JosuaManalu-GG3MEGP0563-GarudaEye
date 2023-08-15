@@ -27,6 +27,8 @@ abstract class NetworkBoundResource<ResultType, RequestType> {
                     onFetchFailed()
                     emit(Resource.Error<ResultType>(apiResponse.errorMessage))
                 }
+
+                else -> {}
             }
         } else {
             emitAll(loadFromDB().map { Resource.Success(it) })
