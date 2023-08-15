@@ -21,6 +21,7 @@ GarudaEye App provides various features that help users to get up-to-date inform
 5. **Water Level Warning Notifications**: Users will receive warning notifications if the water level in a dam rises. (For now, the data for this feature is still dummy as it is empty from the API endpoint /floodgauges to get water level data in a specific region).
 6. **Dark Mode Theme**: The app supports a dark mode theme for user comfort during nighttime use.
 7. **Disaster Details**: Users will be able to view detailed information about disasters in the next release.
+8. **Offline-First Approach**: Recognizing that connectivity might be compromised during disasters, I've implemented an offline-first approach. The app is designed to function seamlessly even when network access is limited or unavailable. It caches essential data locally, ensuring that you can access crucial information when you need it the most.
 
 ## Built With 🛠
 | Name | Version |
